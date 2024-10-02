@@ -5,7 +5,7 @@ import { IoIosLogOut } from "react-icons/io";
 
 const Sidebar = () => {
     return (
-        <nav className="text-base">
+        <nav className="text-base mt-14">
             <ul className="">
                 <li>
                     <NavLink to={'/add-students'} className={({isActive}) => (isActive ? 'bg-[#F33823] flex gap-2 items-center px-6 py-3 rounded-md text-white' : 'bg-white flex gap-2 items-center px-6 py-3 rounded-md')}>
