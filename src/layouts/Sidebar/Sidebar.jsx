@@ -1,11 +1,14 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { CiBoxList } from "react-icons/ci";
 import { LuUsers } from "react-icons/lu";
 import { IoIosLogOut } from "react-icons/io";
 
 const Sidebar = () => {
+    const location = useLocation();
+    console.log(location);
+
     return (
-        <nav className="text-base mt-14">
+        <nav className={`${location.pathname === '/' && 'hidden'} text-base mt-14`}>
             <ul className="">
                 <li>
                     <NavLink to={'/add-students'} className={({isActive}) => (isActive ? 'bg-[#F33823] flex gap-2 items-center px-6 py-3 rounded-md text-white' : 'bg-white flex gap-2 items-center px-6 py-3 rounded-md')}>
@@ -14,7 +17,7 @@ const Sidebar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to={'/'} className={({isActive}) => (isActive ? 'bg-[#F33823] flex gap-2 items-center px-6 py-3 rounded-md text-white' : 'bg-white flex gap-2 items-center px-6 py-3 rounded-md')}>
+                    <NavLink to={'/manage-students'} className={({isActive}) => (isActive ? 'bg-[#F33823] flex gap-2 items-center px-6 py-3 rounded-md text-white' : 'bg-white flex gap-2 items-center px-6 py-3 rounded-md')}>
                         <CiBoxList className="text-lg" />
                         <span>Manage Students</span>
                     </NavLink>

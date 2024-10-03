@@ -1,8 +1,8 @@
-import ExportButton from "./ExportButton";
-import FilterButton from "./FilterButton";
-import InputField from "./InputField";
-import PrintButton from "./PrintButton";
-import StudentRow from "./StudentRow";
+import ExportButton from "../../components/ExportButton";
+import FilterButton from "../../components/FilterButton";
+import InputField from "../../components/InputField";
+import PrintButton from "../../components/PrintButton";
+import StudentRow from "../../components/StudentRow";
 
 const ManageStudents = () => {
     return (

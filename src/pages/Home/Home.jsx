@@ -1,9 +1,9 @@
-import ManageStudents from "../../components/ManageStudents";
+import Login from "../Login/Login";
 
 const Home = () => {
     return (
         <main>
-            <ManageStudents />
+            <Login />
         </main>
     );
 };

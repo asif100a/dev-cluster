@@ -5,6 +5,8 @@ import Root from './Root/Root'
 import Home from './pages/Home/Home'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import AddStudents from './pages/AddStudents/AddStudents'
+import ManageStudents from './pages/ManageStudents/ManageStudents'
+import AuthProvider from './AuthProvider/AuthProvider'
 
 const router = createBrowserRouter([
   {
@@ -18,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: '/add-students',
         element: <AddStudents />
+      },
+      {
+        path: '/manage-students',
+        element: <ManageStudents />
       }
     ]
   }
@@ -25,8 +31,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router}>
-      <Home />
-    </RouterProvider>
+    <AuthProvider>
+      <RouterProvider router={router}>
+        <Home />
+      </RouterProvider>
+    </AuthProvider>
   </StrictMode>,
 )
