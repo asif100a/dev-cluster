@@ -72,7 +72,7 @@ const Login = () => {
                     <div>
                         <input
                             type="submit"
-                            value={'Add Student'}
+                            value={'Login'}
                             className="w-full border border-[#F33823] bg-[#F33823] text-white px-6 py-3 rounded-md focus:outline-none hover:cursor-pointer"
                         />
                     </div>
