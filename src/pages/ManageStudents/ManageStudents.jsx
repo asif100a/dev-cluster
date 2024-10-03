@@ -69,7 +69,7 @@ const ManageStudents = () => {
             buttonsStyling: false
         });
         swalWithBootstrapButtons.fire({
-            title: "Are you sure?",
+            title: "Are you sure you want to delete this item?",
             text: "You won't be able to revert this!",
             icon: "warning",
             showCancelButton: true,
@@ -110,8 +110,18 @@ const ManageStudents = () => {
         // console.log(searchText);
     };
 
+    // Handle Filter by Class
+    const handleFilterByClass = () => {
+        // const byClass = students.filter(student => student?.class )
+    };
+
+    // Handle Filter by Division
+    const handleFilterByDivision = () => {
+
+    };
+ 
     return (
-        <section className="flex-1 relative">
+        <section className="flex-1 relative" id="print-section">
             <div ref={studentRef} className="absolute z-10 w-full h-full flex justify-center items-center hidden">
                 <DetailsModal currentStudent={currentStudent} handleCloseModal={handleCloseModal} />
             </div>
@@ -123,7 +133,7 @@ const ManageStudents = () => {
                 <h3 className="text-xl font-semibold">Manage Students</h3>
                 <InputField handleSearch={handleSearch} />
                 <ExportButton />
-                <FilterButton />
+                <FilterButton handleFilterByClass={handleFilterByClass} handleFilterByDivision={handleFilterByDivision} />
                 <PrintButton />
                 <p>3 October 2024 11:31</p>
             </div>
