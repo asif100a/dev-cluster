@@ -28,7 +28,7 @@ const Login = () => {
     const loginByGoogle = () => {
         googleLogin()
             .then(result => {
-                console.log(result.user)
+                console.log(result.user);
                 toast.success('The user logged in successfully');
                 navigate('/manage-students');
             })
