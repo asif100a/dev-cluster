@@ -1,6 +1,6 @@
 import { IoMdSearch } from "react-icons/io";
 
-const InputField = () => {
+const InputField = ({handleSearch}) => {
     return (
         <div className="border border-gray-100 px-6 py-3 rounded-md bg-gray-100 flex items-center gap-3">
             <IoMdSearch className="text-xl text-gray-500" />
@@ -10,6 +10,7 @@ const InputField = () => {
                 id=""
                 placeholder="Search"
                 className="focus:outline-none bg-gray-100"
+                onChange={handleSearch}
             />
         </div>
     );

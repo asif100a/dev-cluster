@@ -14,18 +14,19 @@ const ManageStudents = () => {
     console.log(students);
     const [currentStudent, setCurrentStudent] = useState({});
     const [editStudent, setEditStudent] = useState({});
+    const [searchText, setSearchText] = useState('');
 
     const studentRef = useRef();
     const editRef = useRef();
 
     useEffect(() => {
         const getStudents = async () => {
-            const { data } = await axios.get(`${import.meta.env.VITE_URL}/students`);
+            const { data } = await axios.get(`${import.meta.env.VITE_URL}/students?search=${searchText}`);
             setStudents(data);
         };
 
         getStudents();
-    }, []);
+    }, [searchText]);
 
     // Open the details modal
     const handleViewModal = async (id) => {
@@ -102,6 +103,13 @@ const ManageStudents = () => {
         });
     };
 
+    // Handle Search Item
+    const handleSearch = (e) => {
+        const text = e.target.value;
+        setSearchText(text);
+        // console.log(searchText);
+    };
+
     return (
         <section className="flex-1 relative">
             <div ref={studentRef} className="absolute z-10 w-full h-full flex justify-center items-center hidden">
@@ -113,7 +121,7 @@ const ManageStudents = () => {
 
             <div className="flex justify-between items-center w-[1200px]">
                 <h3 className="text-xl font-semibold">Manage Students</h3>
-                <InputField />
+                <InputField handleSearch={handleSearch} />
                 <ExportButton />
                 <FilterButton />
                 <PrintButton />
