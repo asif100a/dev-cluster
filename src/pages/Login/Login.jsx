@@ -1,11 +1,10 @@
 import { useForm } from "react-hook-form";
 import useAuth from "../../Hooks/useAuth";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Login = () => {
     const { loginTheUser, googleLogin, user } = useAuth();
-    const navigate = useNavigate();
+    // const path 
     console.log(user)
 
     const {
@@ -21,7 +20,7 @@ const Login = () => {
         // Send data to the server
         loginTheUser(email, password);
         toast.success('The user logged in successfully');
-        navigate('/manage-students');
+        window.location.href = '/manage-students';
     };
 
     // Handle google login
@@ -30,7 +29,7 @@ const Login = () => {
             .then(result => {
                 console.log(result.user);
                 toast.success('The user logged in successfully');
-                navigate('/manage-students');
+                window.location.href = '/manage-students';
             })
     };
 

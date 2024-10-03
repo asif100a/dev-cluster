@@ -16,8 +16,8 @@ const Sidebar = () => {
         logoutUser();
         if(user === null) {
             toast.success('The user logged out');
+            navigate('/');
         }
-        navigate('/');
     };
 
     return (
