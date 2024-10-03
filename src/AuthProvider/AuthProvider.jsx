@@ -1,46 +1,54 @@
 import axios from "axios";
+import { GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { auth } from "../Firebase/firebase.config";
 
 export const AuthContext = createContext(null) ;
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [isPending, setIsPending] = useState(true);
 
-    useEffect(() => {
-        const storedUser = localStorage.getItem('user',);
-        if(storedUser) {
-            setUser(JSON.parse(storedUser));
-        }
-    }, []);
+    const provider = new GoogleAuthProvider();
     
-    // Login the user
-    const loginTheUser = async (email, password) => {
-        try {
-            const user = { email, password };
-            const response = await fetch(`${import.meta.env.VITE_URL}/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(user)
-            })
-
-            const data = await response.json();
-            console.log(data)
-            setUser(data);
-            localStorage.setItem('user', JSON.stringify(data));
-        }
-        catch(error){
-            console.log(error);
-        }
+     // Login the user
+     const loginTheUser = (email, password) => {
+        setIsPending(true);
+        return signInWithEmailAndPassword(auth, email, password);
     };
+
+    // Login with google
+    const googleLogin = () => {
+        setIsPending(true);
+        return signInWithPopup(auth, provider);
+    };
+
+    // Log out the user
+    const logoutUser = () => {
+        setIsPending(true);
+        return signOut(auth);
+    };
+
+    // State change of user
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            console.log(currentUser);
+            setUser(currentUser);
+            setIsPending(false);
+        });
+
+        return() => {
+            unsubscribe();
+        };
+    }, []);
 
     console.log(user);
 
     const authInfo = {
         loginTheUser,
-        user
+        logoutUser,
+        googleLogin,
+        user,
     };
 
     return (
