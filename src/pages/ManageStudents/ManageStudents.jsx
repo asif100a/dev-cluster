@@ -15,6 +15,9 @@ const ManageStudents = () => {
     const [currentStudent, setCurrentStudent] = useState({});
     const [editStudent, setEditStudent] = useState({});
     const [searchText, setSearchText] = useState('');
+    const [selectedClass, setSelectedClass] = useState('')
+    const [selecteDivision, setSelecteDivision] = useState('')
+    const [filteredStudents, setFilteredStudents] = useState([]);
 
     const studentRef = useRef();
     const editRef = useRef();
@@ -27,6 +30,19 @@ const ManageStudents = () => {
 
         getStudents();
     }, [searchText]);
+
+    useEffect(() => {
+        let filtered = students;
+
+        if(selectedClass) {
+            filtered = filtered.filter(student => student?.class == selectedClass)
+        }
+        if(selecteDivision) {
+            filtered = filtered.filter(student => student?.division == selecteDivision)
+        }
+
+        setFilteredStudents(filtered);
+    }, [])
 
     // Open the details modal
     const handleViewModal = async (id) => {
@@ -111,13 +127,15 @@ const ManageStudents = () => {
     };
 
     // Handle Filter by Class
-    const handleFilterByClass = () => {
-        // const byClass = students.filter(student => student?.class )
+    const handleFilterByClass = (e) => {
+        console.log(e.target.value);
+        setSelectedClass(e.target.value)
     };
 
     // Handle Filter by Division
-    const handleFilterByDivision = () => {
-
+    const handleFilterByDivision = (e) => {
+        setSelecteDivision(e.target.value)
+        console.log(e.target.value)
     };
  
     return (
