@@ -35,6 +35,7 @@ const EditModal = ({editStudent}) => {
         console.log(editedData);
         if(editedData?.modifiedCount > 0) {
             toast.success('The student edited successfully');
+            window.location.reload();
         }
     };
 

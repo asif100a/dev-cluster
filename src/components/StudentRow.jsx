@@ -1,9 +1,7 @@
 import { MdOutlineDelete, MdOutlineRemoveRedEye } from "react-icons/md";
 import { RiEditLine } from "react-icons/ri";
-import DetailsModal from "./DetailsModal";
-import useAuth from "../Hooks/useAuth";
 
-const StudentRow = ({ student, handleViewModal, handleOpenEditModal }) => {
+const StudentRow = ({ student, handleViewModal, handleOpenEditModal, handleDeleteStudent }) => {
 
     const { _id, firstName, middleName, lastName, image, class: studentClass, division, rollNumber, city, landmark, addressLine1, addressLine2, pincode } = student;
 // console.log(student)
@@ -21,7 +19,7 @@ const StudentRow = ({ student, handleViewModal, handleOpenEditModal }) => {
                     <button onClick={()=> handleOpenEditModal(_id)}>
                         <RiEditLine className="text-xl text-[#F33823]" />
                     </button>
-                    <button>
+                    <button onClick={() => handleDeleteStudent(_id)}>
                         <MdOutlineDelete className="text-xl text-[#F33823]" />
                     </button>
                 </td>

@@ -7,6 +7,7 @@ import StudentRow from "../../components/StudentRow";
 import axios from "axios";
 import DetailsModal from "../../components/DetailsModal";
 import EditModal from "../../components/EditModal";
+import Swal from "sweetalert2";
 
 const ManageStudents = () => {
     const [students, setStudents] = useState([]);
@@ -43,7 +44,7 @@ const ManageStudents = () => {
     }
 
     // Open the Edit Modal
-    const handleOpenEditModal = async(id) => {
+    const handleOpenEditModal = async (id) => {
         console.log(id);
 
         // Get specific data
@@ -55,6 +56,51 @@ const ManageStudents = () => {
         editRef.current.classList.remove('hidden');
     }
 
+    // Handle delete student
+    const handleDeleteStudent = (id) => {
+        console.log(id);
+
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-success",
+                cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
+        });
+        swalWithBootstrapButtons.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel!",
+            reverseButtons: true
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                // Delete the student data
+                const { data } = await axios.delete(`${import.meta.env.VITE_URL}/deleteStudents/${id}`);
+                console.log(data);
+
+                if (data?.deletedCount > 0) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    });
+                    window.location.reload();
+                }
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire({
+                    title: "Cancelled",
+                    text: "Your imaginary file is safe :)",
+                    icon: "error"
+                });
+            }
+        });
+    };
 
     return (
         <section className="flex-1 relative">
@@ -95,6 +141,7 @@ const ManageStudents = () => {
                                     student={student}
                                     handleViewModal={handleViewModal}
                                     handleOpenEditModal={handleOpenEditModal}
+                                    handleDeleteStudent={handleDeleteStudent}
                                 />
                             ))
                         }
