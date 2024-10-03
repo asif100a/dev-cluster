@@ -45,7 +45,7 @@ const ManageStudents = () => {
                     {/* Data of Students */}
                     <tbody className="border">
                         {
-                            students.map((student) => (
+                            students?.map((student) => (
                                 <StudentRow key={student._id} student={student} />
                             ))
                         }
