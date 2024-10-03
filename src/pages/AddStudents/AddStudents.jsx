@@ -1,9 +1,14 @@
+import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddStudents = () => {
     const [classError, setClassError] = useState('');
     const [divisionError, setDivisionError] = useState('');
+    const navigate = useNavigate();
 
     const {
         register,
@@ -11,22 +16,33 @@ const AddStudents = () => {
         formState: { errors },
     } = useForm();
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         // Clear the error
         setClassError('');
         setDivisionError('');
-        
+
         // Show error message if default value is selected
-        if(data.class === 'select_class') setClassError('Please select a class');
-        if(data.division === 'select_division') setDivisionError('Please select a division');
+        if (data.class === 'select_class') setClassError('Please select a class');
+        if (data.division === 'select_division') setDivisionError('Please select a division');
 
         console.table(data);
+
+        // Send data to the server
+        const { data: studentData } = await axios.post(`${import.meta.env.VITE_URL}/addStudent`, data);
+        console.log(studentData);
+        if (studentData.insertedId) {
+            toast.success('The Student added successfully');
+            navigate('/manage-students');
+        }
     };
 
     return (
         <div>
-            <h3 className="text-xl font-semibold">Add Students</h3>
-            <form className="w-[1200px]" onSubmit={handleSubmit(onSubmit)}>
+            <div className="flex justify-between items-center">
+                <h3 className="text-xl font-semibold">Add Students</h3>
+                <p>3 October 2024 11:31</p>
+            </div>
+            <form className="w-[1200px] mt-6" onSubmit={handleSubmit(onSubmit)}>
                 <div className="w-full grid grid-cols-3 gap-6">
                     {/* First Name */}
                     <div>
@@ -35,6 +51,7 @@ const AddStudents = () => {
                             type="text"
                             name="firstName"
                             id=""
+                            placeholder="First Name"
                             className="w-full border px-6 py-3 rounded-md focus:outline-none"
                             {...register("firstName", { required: true })}
                         />
@@ -47,6 +64,7 @@ const AddStudents = () => {
                             type="text"
                             name="middleName"
                             id=""
+                            placeholder="Middle Name"
                             className="w-full border px-6 py-3 rounded-md focus:outline-none"
                             {...register("middleName", { required: true })}
                         />
@@ -59,10 +77,24 @@ const AddStudents = () => {
                             type="text"
                             name="lastName"
                             id=""
+                            placeholder="Last Name"
                             className="w-full border px-6 py-3 rounded-md focus:outline-none"
                             {...register("lastName", { required: true })}
                         />
                         {errors.lastName && <span className="text-[#F33823]">This field is required</span>}
+                    </div>
+                    {/* Image */}
+                    <div>
+                        <label htmlFor="lastName">Image URL</label>
+                        <input
+                            type="text"
+                            name="image"
+                            id=""
+                            placeholder="Image URL"
+                            className="w-full border px-6 py-3 rounded-md focus:outline-none"
+                            {...register("image", { required: true })}
+                        />
+                        {errors.image && <span className="text-[#F33823]">This field is required</span>}
                     </div>
                     {/* Select Class */}
                     <div className="form-control w-full">
@@ -74,11 +106,18 @@ const AddStudents = () => {
                             {...register("class")}
                         >
                             <option disabled value={'select_class'}>Select Class</option>
-                            <option>Star Wars</option>
-                            <option>Harry Potter</option>
-                            <option>Lord of the Rings</option>
-                            <option>Planet of the Apes</option>
-                            <option>Star Trek</option>
+                            <option value={'1'}>Class 1</option>
+                            <option value={'2'}>Class 2</option>
+                            <option value={'3'}>Class 3</option>
+                            <option value={'4'}>Class 4</option>
+                            <option value={'5'}>Class 5</option>
+                            <option value={'6'}>Class 6</option>
+                            <option value={'7'}>Class 7</option>
+                            <option value={'8'}>Class 8</option>
+                            <option value={'9'}>Class 9</option>
+                            <option value={'10'}>Class 10</option>
+                            <option value={'11'}>Class 11</option>
+                            <option value={'12'}>Class 12</option>
                         </select>
                         {classError && <span className="text-[#F33823]">{classError}</span>}
                     </div>
@@ -92,11 +131,11 @@ const AddStudents = () => {
                             {...register("division")}
                         >
                             <option disabled value={'select_division'}>Select Division</option>
-                            <option>Star Wars</option>
-                            <option>Harry Potter</option>
-                            <option>Lord of the Rings</option>
-                            <option>Planet of the Apes</option>
-                            <option>Star Trek</option>
+                            <option value={'A'}>A</option>
+                            <option value={'B'}>B</option>
+                            <option value={'C'}>C</option>
+                            <option value={'D'}>D</option>
+                            <option value={'E'}>E</option>
                         </select>
                         {divisionError && <span className="text-[#F33823]">{divisionError}</span>}
                     </div>
@@ -107,10 +146,11 @@ const AddStudents = () => {
                             type="number"
                             name="rollNumber"
                             id=""
+                            placeholder="Enter Roll Number in Digits"
                             className="w-full border px-6 py-3 rounded-md focus:outline-none"
-                            {...register("rollNumber", { required: true })}
+                            {...register("rollNumber", { required: true, minLength: 2, maxLength: 2 })}
                         />
-                        {errors.rollNumber && <span className="text-[#F33823]">This field is required</span>}
+                        {errors.rollNumber && <span className="text-[#F33823]">Please provide 2 digit roll number</span>}
                     </div>
                 </div>
 
@@ -122,6 +162,7 @@ const AddStudents = () => {
                             type="text"
                             name="addressLine1"
                             id=""
+                            placeholder="Address Line 1"
                             className="w-full border px-6 py-3 rounded-md focus:outline-none"
                             {...register("addressLine1", { required: true })}
                         />
@@ -134,6 +175,7 @@ const AddStudents = () => {
                             type="text"
                             name="addressLine2"
                             id=""
+                            placeholder="Address Line 2"
                             className="w-full border px-6 py-3 rounded-md focus:outline-none"
                             {...register("addressLine2", { required: true })}
                         />
@@ -149,6 +191,7 @@ const AddStudents = () => {
                             type="text"
                             name="landmark"
                             id=""
+                            placeholder="Landmark"
                             className="w-full border px-6 py-3 rounded-md focus:outline-none"
                             {...register("landmark", { required: true })}
                         />
@@ -161,6 +204,7 @@ const AddStudents = () => {
                             type="text"
                             name="city"
                             id=""
+                            placeholder="City"
                             className="w-full border px-6 py-3 rounded-md focus:outline-none"
                             {...register("city", { required: true })}
                         />
@@ -173,10 +217,11 @@ const AddStudents = () => {
                             type="number"
                             name="pincode"
                             id=""
+                            placeholder="Pincode"
                             className="w-full border px-6 py-3 rounded-md focus:outline-none"
-                            {...register("pincode", { required: true })}
+                            {...register("pincode", { required: true, minLength: 4, maxLength: 6 })}
                         />
-                        {errors.pincode && <span className="text-[#F33823]">This field is required</span>}
+                        {errors.pincode && <span className="text-[#F33823]">Please provide 4 to 6 digit pincode</span>}
                     </div>
                     {/* Submit */}
                     <div>
@@ -188,6 +233,8 @@ const AddStudents = () => {
                     </div>
                 </div>
             </form>
+
+            <ToastContainer />
         </div>
     );
 };

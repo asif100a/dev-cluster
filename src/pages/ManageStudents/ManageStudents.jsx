@@ -1,13 +1,27 @@
+import { useEffect, useState } from "react";
 import ExportButton from "../../components/ExportButton";
 import FilterButton from "../../components/FilterButton";
 import InputField from "../../components/InputField";
 import PrintButton from "../../components/PrintButton";
 import StudentRow from "../../components/StudentRow";
+import axios from "axios";
 
 const ManageStudents = () => {
+    const [students, setStudents] = useState([]);
+    console.log(students);
+
+    useEffect(() => {
+        const getStudents = async () => {
+            const { data } = await axios.get(`${import.meta.env.VITE_URL}/students`);
+            setStudents(data);
+        };
+
+        getStudents();
+    }, []);
+
     return (
         <section className="flex-1">
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center w-[1200px]">
                 <h3 className="text-xl font-semibold">Manage Students</h3>
                 <InputField />
                 <ExportButton />
@@ -28,9 +42,13 @@ const ManageStudents = () => {
                             <th>View / Edit / Delete</th>
                         </tr>
                     </thead>
+                    {/* Data of Students */}
                     <tbody className="border">
-                        {/* row 1 */}
-                        <StudentRow />
+                        {
+                            students.map((student) => (
+                                <StudentRow key={student._id} student={student} />
+                            ))
+                        }
                     </tbody>
                 </table>
             </div>
